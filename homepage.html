@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PavanBrowser Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 20px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 50px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 25px;
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-button {
+            padding: 15px 30px;
+            font-size: 16px;
+            background-color: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .search-button:hover {
+            background-color: #3d8ae6;
+        }
+
+        .section {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-link {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .quick-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .recent-list {
+            list-style: none;
+        }
+
+        .recent-item {
+            padding: 12px 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .recent-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .recent-link {
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+        }
+
+        .recent-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .recent-url {
+            font-size: 12px;
+            color: #cccccc;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .no-history {
+            color: #cccccc;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo">PavanBrowser</div>
+
+    <div class="search-container">
+        <form class="search-form" onsubmit="handleSearch(event)">
+            <input type="text" class="search-input" placeholder="Search Google or enter URL..." id="searchInput"
+                autofocus>
+            <button type="submit" class="search-button">Search</button>
+        </form>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Quick Links</div>
+        <div class="quick-links">
+            <a href="https://www.youtube.com" class="quick-link">📺 YouTube</a>
+            <a href="https://www.wikipedia.org" class="quick-link">📚 Wikipedia</a>
+            <a href="https://www.github.com" class="quick-link">💻 GitHub</a>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Recently Visited</div>
+        <ul class="recent-list" id="recentList">
+            <li class="no-history">No recent history</li>
+        </ul>
+    </div>
+
+    <script>
+        function handleSearch(event) {
+            event.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                if (query.includes('.') && !query.includes(' ')) {
+                    // Looks like a URL
+                    if (!query.startsWith('http://') && !query.startsWith('https://')) {
+                        window.location.href = 'https://' + query;
+                    } else {
+                        window.location.href = query;
+                    }
+                } else {
+                    // Search query
+                    window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
+                }
+            }
+        }
+
+        // Load recent history from localStorage
+        function loadRecentHistory() {
+            try {
+                const historyData = localStorage.getItem('browserHistory');
+                if (historyData) {
+                    const history = JSON.parse(historyData);
+                    const recentList = document.getElementById('recentList');
+
+                    if (history.length > 0) {
+                        recentList.innerHTML = '';
+                        const recent = history.slice(-5).reverse();
+
+                        recent.forEach(entry => {
+                            const li = document.createElement('li');
+                            li.className = 'recent-item';
+                            li.innerHTML = `
+                                <a href="${entry.url}" class="recent-link">
+                                    <div class="recent-title">${entry.title || 'Untitled'}</div>
+                                    <div class="recent-url">${entry.url}</div>
+                                </a>
+                            `;
+                            recentList.appendChild(li);
+                        });
+                    }
+                }
+            } catch (e) {
+                console.error('Error loading history:', e);
+            }
+        }
+
+        loadRecentHistory();
+    </script>
+</body>
+
+</html>
