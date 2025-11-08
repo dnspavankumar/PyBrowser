@@ -10,10 +10,10 @@ from PyQt6.QtWebEngineCore import QWebEngineProfile, QWebEnginePage
 from PyQt6.QtGui import QAction, QIcon, QPixmap, QPainter, QColor, QFont
 
 
-class PavanBrowser(QMainWindow):
+class Browser(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PavanBrowser")
+        self.setWindowTitle("Browser")
         self.homepage_file = Path("homepage.html").resolve()
         self.home_url = f"file:///{self.homepage_file.as_posix()}"
         self.history_file = Path("browser_history.json")
@@ -55,8 +55,8 @@ class PavanBrowser(QMainWindow):
         # Add initial tab
         self.add_new_tab()
         
-        # Show full screen
-        self.showFullScreen()
+        # Set minimum window size
+        self.setMinimumSize(800, 600)
     
     def apply_dark_mode(self):
         dark_stylesheet = """
@@ -369,8 +369,19 @@ class PavanBrowser(QMainWindow):
     def sync_history_to_page(self, browser):
         """Sync history to the homepage's localStorage"""
         if browser.url().toString().startswith("file:///"):
+            # Convert history to JSON and properly escape for JavaScript
             history_json = json.dumps(self.history)
-            script = f"localStorage.setItem('browserHistory', '{history_json}');"
+            # Use JSON.parse to avoid escaping issues
+            script = f"""
+                try {{
+                    localStorage.setItem('browserHistory', {json.dumps(history_json)});
+                    if (typeof loadRecentHistory === 'function') {{
+                        loadRecentHistory();
+                    }}
+                }} catch(e) {{
+                    console.error('Error syncing history:', e);
+                }}
+            """
             browser.page().runJavaScript(script)
     
     def load_history(self):
@@ -408,8 +419,8 @@ class PavanBrowser(QMainWindow):
     def show_about(self):
         QMessageBox.about(
             self,
-            "About PavanBrowser",
-            "PavanBrowser v1.0\n\nBuilt from scratch in Python"
+            "About Browser",
+            "Browser v1.0\n\nBuilt from scratch in Python"
         )
 
 
@@ -425,13 +436,13 @@ def create_splash_screen():
     painter.setPen(QColor("#ffffff"))
     font = QFont("Arial", 36, QFont.Weight.Bold)
     painter.setFont(font)
-    painter.drawText(pixmap.rect(), Qt.AlignmentFlag.AlignCenter, "PavanBrowser")
+    painter.drawText(pixmap.rect(), Qt.AlignmentFlag.AlignCenter, "Browser")
     
     # Draw subtitle
     font = QFont("Arial", 14)
     painter.setFont(font)
     painter.setPen(QColor("#cccccc"))
-    painter.drawText(50, 250, 500, 50, Qt.AlignmentFlag.AlignCenter, "Launching PavanBrowser...")
+    painter.drawText(50, 250, 500, 50, Qt.AlignmentFlag.AlignCenter, "Launching Browser...")
     
     # Draw version
     font = QFont("Arial", 10)
@@ -458,11 +469,11 @@ def main():
     app.processEvents()
     
     # Create main window
-    window = PavanBrowser()
+    window = Browser()
     
-    # Close splash and show window
+    # Close splash and show window maximized
     splash.finish(window)
-    window.show()
+    window.showMaximized()
     
     sys.exit(app.exec())
 

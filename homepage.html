@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PavanBrowser Home</title>
+    <title>PyBrowser Home</title>
     <style>
         * {
             margin: 0;
@@ -13,185 +13,364 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: #ffffff;
+            font-family: 'Tahoma', 'Verdana', sans-serif;
+            background-color: #f0f0f0;
+            color: #000000;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 50px 20px;
+            padding: 0;
+        }
+
+        .browser-chrome {
+            width: 100%;
+            background: linear-gradient(to bottom, #dfe8f5 0%, #c5d9f1 100%);
+            border-bottom: 1px solid #8c9cba;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .title-bar {
+            background: linear-gradient(to bottom, #3a6ea5 0%, #2f5c8a 100%);
+            padding: 8px 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .browser-icon {
+            width: 16px;
+            height: 16px;
+            background: #ff6b00;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .menu-bar {
+            background: #f0f0f0;
+            border-bottom: 1px solid #c0c0c0;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        .menu-item {
+            display: inline-block;
+            padding: 4px 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: #e0e8f5;
+            border: 1px solid #b0c4de;
+        }
+
+        .toolbar {
+            background: #f0f0f0;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        .toolbar-button {
+            padding: 5px 12px;
+            background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+            border: 1px solid #adadad;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .toolbar-button:hover {
+            background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%);
+            border-color: #4a8cd4;
+        }
+
+        .toolbar-button:active {
+            background: linear-gradient(to bottom, #e0e0e0 0%, #d0d0d0 100%);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .address-bar-container {
+            background: #f0f0f0;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #c0c0c0;
+        }
+
+        .address-label {
+            font-size: 11px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .address-bar {
+            flex: 1;
+            padding: 4px 8px;
+            border: 1px solid #7f9db9;
+            background: white;
+            font-size: 12px;
+            font-family: 'Tahoma', sans-serif;
+            outline: none;
+        }
+
+        .address-bar:focus {
+            border-color: #4a8cd4;
+        }
+
+        .go-button {
+            padding: 4px 16px;
+            background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+            border: 1px solid #adadad;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .go-button:hover {
+            border-color: #4a8cd4;
+        }
+
+        .content-area {
+            width: 100%;
+            max-width: 100%;
+            padding: 20px;
+            background: #ffffff;
+            flex: 1;
+        }
+
+        .page-container {
+            max-width: 900px;
+            margin: 0 auto;
         }
 
         .logo {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: bold;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .search-container {
-            width: 100%;
-            max-width: 600px;
-            margin-bottom: 50px;
-        }
-
-        .search-form {
-            display: flex;
-            gap: 10px;
-        }
-
-        .search-input {
-            flex: 1;
-            padding: 15px 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 25px;
-            outline: none;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .search-button {
-            padding: 15px 30px;
-            font-size: 16px;
-            background-color: #4a9eff;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s;
-        }
-
-        .search-button:hover {
-            background-color: #3d8ae6;
+            margin-bottom: 30px;
+            color: #2f5c8a;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
         }
 
         .section {
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
 
         .section-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: bold;
+            color: #2f5c8a;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #c5d9f1;
         }
 
         .quick-links {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
         }
 
         .quick-link {
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            text-align: center;
+            padding: 12px 15px;
+            background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%);
+            border: 1px solid #b0c4de;
             text-decoration: none;
-            color: white;
-            font-weight: 500;
-            transition: all 0.3s;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            color: #000080;
+            font-size: 13px;
+            font-weight: bold;
+            transition: all 0.2s;
+            display: block;
+            text-align: center;
         }
 
         .quick-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
+            background: linear-gradient(to bottom, #e0e8f5 0%, #d0dded 100%);
+            border-color: #4a8cd4;
+            color: #000080;
         }
 
         .recent-list {
             list-style: none;
+            background: #f9f9f9;
+            border: 1px solid #d0d0d0;
+            padding: 10px;
         }
 
         .recent-item {
-            padding: 12px 15px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: background-color 0.3s;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.2s;
+        }
+
+        .recent-item:last-child {
+            border-bottom: none;
         }
 
         .recent-item:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: #e8f0f8;
         }
 
         .recent-link {
-            color: #ffffff;
+            color: #000080;
             text-decoration: none;
             display: block;
         }
 
+        .recent-link:hover {
+            text-decoration: underline;
+        }
+
         .recent-title {
-            font-weight: 500;
-            margin-bottom: 5px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 13px;
         }
 
         .recent-url {
-            font-size: 12px;
-            color: #cccccc;
+            font-size: 11px;
+            color: #666;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
 
         .no-history {
-            color: #cccccc;
+            color: #666;
             font-style: italic;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .status-bar {
+            width: 100%;
+            background: #f0f0f0;
+            border-top: 1px solid #c0c0c0;
+            padding: 4px 10px;
+            font-size: 11px;
+            color: #333;
+            display: flex;
+            justify-content: space-between;
+            position: fixed;
+            bottom: 0;
+        }
+
+        .status-text {
+            flex: 1;
+        }
+
+        .status-indicator {
+            display: flex;
+            gap: 15px;
         }
     </style>
 </head>
 
 <body>
-    <div class="logo">PavanBrowser</div>
+    <div class="browser-chrome">
+        <div class="title-bar">
+            <div class="browser-icon">Py</div>
+            PyBrowser - Home
+        </div>
 
-    <div class="search-container">
-        <form class="search-form" onsubmit="handleSearch(event)">
-            <input type="text" class="search-input" placeholder="Search Google or enter URL..." id="searchInput"
-                autofocus>
-            <button type="submit" class="search-button">Search</button>
-        </form>
-    </div>
+        <div class="menu-bar">
+            <span class="menu-item">File</span>
+            <span class="menu-item">Edit</span>
+            <span class="menu-item">View</span>
+            <span class="menu-item">Go</span>
+            <span class="menu-item">Bookmarks</span>
+            <span class="menu-item">Tools</span>
+            <span class="menu-item">Help</span>
+        </div>
 
-    <div class="section">
-        <div class="section-title">Quick Links</div>
-        <div class="quick-links">
-            <a href="https://www.youtube.com" class="quick-link">📺 YouTube</a>
-            <a href="https://www.wikipedia.org" class="quick-link">📚 Wikipedia</a>
-            <a href="https://www.github.com" class="quick-link">💻 GitHub</a>
+        <div class="toolbar">
+            <button class="toolbar-button">Back</button>
+            <button class="toolbar-button">Forward</button>
+            <button class="toolbar-button">Reload</button>
+            <button class="toolbar-button">Stop</button>
+            <button class="toolbar-button">Home</button>
+        </div>
+
+        <div class="address-bar-container">
+            <span class="address-label">Address:</span>
+            <input type="text" class="address-bar" placeholder="http://" id="addressBar">
+            <button class="go-button" onclick="handleGo()">Go</button>
         </div>
     </div>
 
-    <div class="section">
-        <div class="section-title">Recently Visited</div>
-        <ul class="recent-list" id="recentList">
-            <li class="no-history">No recent history</li>
-        </ul>
+    <div class="content-area">
+        <div class="page-container">
+            <div class="logo">PyBrowser</div>
+
+            <div class="section">
+                <div class="section-title">Quick Links</div>
+                <div class="quick-links">
+                    <a href="https://www.youtube.com" class="quick-link">YouTube</a>
+                    <a href="https://www.wikipedia.org" class="quick-link">Wikipedia</a>
+                    <a href="https://www.github.com" class="quick-link">GitHub</a>
+                    <a href="https://www.reddit.com" class="quick-link">Reddit</a>
+                    <a href="https://www.stackoverflow.com" class="quick-link">Stack Overflow</a>
+                    <a href="https://news.ycombinator.com" class="quick-link">Hacker News</a>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">Recent History</div>
+                <ul class="recent-list" id="recentList">
+                    <li class="no-history">No recent history available</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-text">Ready</div>
+        <div class="status-indicator">
+            <span>PyBrowser v1.0</span>
+        </div>
     </div>
 
     <script>
-        function handleSearch(event) {
-            event.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
+        function handleGo() {
+            const query = document.getElementById('addressBar').value.trim();
             if (query) {
                 if (query.includes('.') && !query.includes(' ')) {
-                    // Looks like a URL
                     if (!query.startsWith('http://') && !query.startsWith('https://')) {
                         window.location.href = 'https://' + query;
                     } else {
                         window.location.href = query;
                     }
                 } else {
-                    // Search query
                     window.location.href = 'https://www.google.com/search?q=' + encodeURIComponent(query);
                 }
             }
         }
 
-        // Load recent history from localStorage
+        document.getElementById('addressBar').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                handleGo();
+            }
+        });
+
         function loadRecentHistory() {
             try {
                 const historyData = localStorage.getItem('browserHistory');
@@ -201,14 +380,14 @@
 
                     if (history.length > 0) {
                         recentList.innerHTML = '';
-                        const recent = history.slice(-5).reverse();
+                        const recent = history.slice(-8).reverse();
 
                         recent.forEach(entry => {
                             const li = document.createElement('li');
                             li.className = 'recent-item';
                             li.innerHTML = `
                                 <a href="${entry.url}" class="recent-link">
-                                    <div class="recent-title">${entry.title || 'Untitled'}</div>
+                                    <div class="recent-title">${entry.title || 'Untitled Page'}</div>
                                     <div class="recent-url">${entry.url}</div>
                                 </a>
                             `;
